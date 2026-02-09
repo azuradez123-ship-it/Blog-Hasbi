@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Journey | Hasbi Maula Hamzah</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --primary-color: #3b82f6;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* --- NAVIGASI --- */
+        nav {
+            background-color: var(--sidebar-bg);
+            padding: 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        nav ul { list-style: none; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        nav ul li a {
+            color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.8rem;
+            padding: 0.5rem 0.8rem; border-radius: 8px; transition: 0.3s;
+        }
+        nav ul li a:hover { color: white; background: rgba(255,255,255,0.1); }
+
+        /* --- LAYOUT --- */
+        main { padding: 2rem 1rem; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .card {
+            background: var(--white); padding: 2rem; border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; margin-bottom: 2rem;
+        }
+        
+        /* Grafik Lebih Besar */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem; }
+        .chart-container { position: relative; height: 500px; width: 100%; }
+
+        /* --- MATERI --- */
+        .section-title {
+            margin: 4rem 0 1.5rem; font-size: 2rem; font-weight: 800;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-title::before { content: ''; width: 8px; height: 35px; background: var(--primary-color); border-radius: 10px; }
+        
+        .grid-materi { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .materi-card { border-left: 4px solid var(--primary-color); padding-left: 1.5rem; }
+        .materi-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .materi-card p { line-height: 1.8; color: var(--text-gray); text-align: justify; }
+
+        /* --- BIOGRAFI --- */
+        .bio-section {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white; padding: 3rem; border-radius: 24px; margin-top: 5rem;
+            display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+        }
+        .bio-img { width: 120px; height: 120px; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; }
+        .bio-content { flex: 1; min-width: 250px; }
+        .bio-content h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .bio-content p { opacity: 0.9; line-height: 1.6; }
+
+        /* --- KOMENTAR --- */
+        .comment-item { padding: 1.5rem 0; border-bottom: 1px solid #f1f5f9; }
+        .comment-author { font-weight: 700; color: var(--text-dark); }
+        .comment-date { font-size: 0.85rem; color: var(--text-gray); margin-left: 5px; }
+        .comment-text { margin-top: 10px; font-size: 0.95rem; line-height: 1.6; color: #475569; }
+
+        @media (min-width: 1024px) {
+            body { flex-direction: row; }
+            nav { width: 280px; height: 100vh; position: fixed; flex-direction: column; padding: 2.5rem 1.5rem; }
+            nav ul { flex-direction: column; align-items: flex-start; margin-top: 2rem; }
+            main { margin-left: 280px; width: calc(100% - 280px); padding: 4rem; }
+            .grid-materi { grid-template-columns: repeat(2, 1fr); }
+            .dashboard-grid { grid-template-columns: 3fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">HASBI MAULA<br><span style="font-weight: 400; font-size: 1.7em; color: #94a3b8;">LEARNING DIARY</span></div>
+        <ul>
+            <li><a href="#overview">🏠 Overview</a></li>
+            <li><a href="#kelas10">📚 Kelas 10</a></li>
+            <li><a href="#kelas11">💻 Kelas 11</a></li>
+            <li><a href="#kelas12">🚀 Kelas 12</a></li>
+            <li><a href="#biografi">👤 Biografi</a></li>
+            <li><a href="#diskusi">💬 Diskusi</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header id="overview" style="margin-bottom: 3rem;">
+            <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -1px;">Informatika Learning Diary</h1>
+            <p style="font-size: 1.1rem; color: var(--text-gray);">Dokumentasi akademik dan penguasaan teknologi digital Hasbi Maula Hamzah.</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3 style="margin-bottom: 1.5rem;">Visualisasi Penguasaan Bidang (Radar Skill)</h3>
+                <div class="chart-container"><canvas id="radarChart"></canvas></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="card" style="background: var(--primary-color); color: white; border: none; text-align: center;">
+                    <h4>Progres Belajar</h4>
+                    <h2 style="font-size: 3rem;">80%</h2>
+                </div>
+                <div class="card" style="background: #10b981; color: white; border: none; text-align: center;">
+                    <h4>Modul Selesai</h4>
+                    <h2 style="font-size: 3rem;">32</h2>
+                </div>
+            </div>
+        </div>
+
+        <section id="kelas10">
+            <h2 class="section-title">Fase E: Pondasi Informatika (Kelas 10)</h2>
+            <div class="grid-materi">
+                <div class="card materi-card">
+                    <h3>Berpikir Komputasional (CT)</h3>
+                    <p>Materi ini merupakan akar dari informatika. Saya mempelajari empat pilar utama: Dekomposisi (memecah masalah), Pengenalan Pola, Abstraksi (fokus pada informasi penting), dan Algoritma. Implementasinya mencakup penyelesaian masalah logika dan pengenalan alur kerja sistem melalui Flowchart yang presisi.</p>
+                </div>
+                <div class="card materi-card">
+                    <h3>Sistem Komputer & Hardware</h3>
+                    <p>Mendalami bagaimana perangkat keras (CPU, RAM, ALU) berinteraksi dengan perangkat lunak. Saya mempelajari siklus <i>Fetch-Decode-Execute</i> serta peran Sistem Operasi dalam mengelola sumber daya perangkat keras agar aplikasi dapat berjalan dengan efisien dan stabil.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kelas11">
+            <h2 class="section-title">Fase F: Eksplorasi Kode (Kelas 11)</h2>
+            <div class="grid-materi">
+                <div class="card materi-card">
+                    <h3>Algoritma & Pemrograman Lanjut</h3>
+                    <p>Fokus pada bahasa Python dan C++. Saya mempelajari penggunaan Array multifungsi, struktur kontrol percabangan dan perulangan, hingga pembuatan fungsi (modularisasi kode). Materi ini melatih saya membangun solusi perangkat lunak yang sistematis dan mudah dikelola (maintainable code).</p>
+                </div>
+                <div class="card materi-card">
+                    <h3>Jaringan Komputer & Internet</h3>
+                    <p>Mempelajari cara data berpindah melalui kabel dan gelombang. Materi mencakup model OSI Layer, alamat IP (IPv4), serta protokol keamanan dasar. Saya memahami bagaimana <i>Router</i> dan <i>Switch</i> bekerja sama membangun ekosistem internet global yang kita gunakan sehari-hari.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kelas12">
+            <h2 class="section-title">Fase F Lanjut: Inovasi Digital (Kelas 12)</h2>
+            <div class="grid-materi">
+                <div class="card materi-card">
+                    <h3>Analisis Data & Big Data</h3>
+                    <p>Dunia saat ini digerakkan oleh data. Saya mempelajari cara mengumpulkan, membersihkan, dan memvisualisasikan data mentah menjadi informasi yang berharga. Teknik statistik digunakan untuk memprediksi tren masa depan melalui grafik yang informatif dan mudah dipahami oleh pengambil keputusan.</p>
+                </div>
+                <div class="card materi-card">
+                    <h3>Keamanan Siber & Dampak Sosial</h3>
+                    <p>Teknologi memiliki tanggung jawab etis. Saya mempelajari ancaman siber seperti <i>phishing</i> dan <i>malware</i>, serta pentingnya enkripsi. Selain itu, kami mendiskusikan UU ITE dan bagaimana teknologi seharusnya digunakan untuk kemajuan sosial tanpa melanggar privasi individu.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="biografi" class="bio-section">
+            <div class="bio-img">H</div>
+            <div class="bio-content">
+                <h2>Hasbi Maula Hamzah</h2>
+                <p><strong>Siswa SMA Negeri 54 Jakarta</strong></p>
+                <p style="margin-top: 10px; opacity: 0.85;">Saya adalah seorang pelajar yang memiliki antusiasme tinggi di bidang Teknologi Informasi dan Komunikasi. Selama masa studi di SMA 54, saya fokus mendalami algoritma, logika pemrograman, dan analisis data. Melalui diary digital ini, saya mendokumentasikan setiap langkah perjalanan belajar saya untuk menjadi seorang profesional IT yang inovatif dan solutif di masa depan.</p>
+            </div>
+        </section>
+
+        <section id="diskusi" style="margin-top: 5rem;">
+            <h2 class="section-title">💬 Diskusi & Komentar</h2>
+            <div class="card">
+                <div style="margin-bottom: 3rem;">
+                    <input type="text" id="userName" placeholder="Nama Anda" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit;">
+                    <textarea id="userComment" rows="3" placeholder="Bagikan pemikiran Anda..." style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit;"></textarea>
+                    <button onclick="saveComment()" style="background: var(--primary-color); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s;">Publikasikan Komentar</button>
+                </div>
+                <div id="commentDisplay"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Coding (Python/C++)', 'Hardware Knowledge', 'Networking', 'Data Analysis', 'Cyber Security', 'Logic & Algorithm'],
+                    datasets: [{
+                        label: 'Skala Penguasaan',
+                        data: [85, 75, 70, 90, 80, 95],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#3b82f6',
+                        pointRadius: 5
+                    }]
+                },
+                options: { 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        r: { 
+                            beginAtZero: true, 
+                            max: 100, 
+                            ticks: { display: false },
+                            pointLabels: { font: { size: 14, weight: '600' } }
+                        } 
+                    },
+                    plugins: { legend: { labels: { font: { size: 16 } } } }
+                }
+            });
+            renderComments();
+        });
+
+        const initialComments = [
+            { name: "Lili Silvia", date: "February 4, 2026 at 6:24 PM", text: "Sekarng materi informatika sudah sesuai dengan perkembangan teknologi , tinggal siswa yg harus bijak dalam menggunakannya , memilih yg lebih bermanfaat untuk mendukung pembelajaran atau larut dalam kegiatan yg tidak bermanfaat , seperti bermain game , maka bijaklah memilih , untuk bisa berprestasi sekarang dan dimasa depan yg lebih baik" },
+            { name: "Ekonomi", date: "February 5, 2026 at 3:59 PM", text: "Isi Blognya menarik karena kita mengetahui tentang teknologi itu sendiri. Memahami manfaat dari teknologi. Lanjutin buat blognya." },
+            { name: "SAHIA", date: "February 5, 2026 at 9:24 PM", text: "Bagus dibacanya enak karena isinya ga bertele tele dari materi pengetahuan yang bisa langsung kena dan tersimpan di otak sebagai bahan pembelajaran. Lanjutkan" },
+            { name: "Ms.Lolita", date: "February 5, 2026 at 11:26 PM", text: "Awesome. I hope you can continue writing your blog with content that is even more creative and beneficial." }
+        ];
+
+        function renderComments() {
+            const display = document.getElementById('commentDisplay');
+            let userComments = JSON.parse(localStorage.getItem('user_comments')) || [];
+            let allComments = [...userComments].reverse().concat(initialComments);
+            display.innerHTML = allComments.map(c => `
+                <div class="comment-item">
+                    <span class="comment-author">${c.name}</span><span class="comment-date">${c.date}</span>
+                    <p class="comment-text">${c.text}</p>
+                    <a style="color: #3b82f6; font-size: 0.8rem; font-weight: 700; text-decoration: none; margin-top: 5px; display: inline-block; cursor: pointer;">Reply</a>
+                </div>
+            `).join('');
+        }
+
+        function saveComment() {
+            const name = document.getElementById('userName').value;
+            const text = document.getElementById('userComment').value;
+            if (!name || !text) return alert("Isi nama dan komentar!");
+            
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + " at " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0') + (now.getHours() >= 12 ? ' PM' : ' AM');
+            
+            let userComments = JSON.parse(localStorage.getItem('user_comments')) || [];
+            userComments.push({ name, date: formattedDate, text });
+            localStorage.setItem('user_comments', JSON.stringify(userComments));
+            
+            document.getElementById('userName').value = ""; document.getElementById('userComment').value = "";
+            renderComments();
+        }
+    </script>
+</body>
+</html>
