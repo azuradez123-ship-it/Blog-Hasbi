@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informatika Journey | Hasbi Maula Hamzah</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --sidebar-color: #0f172a;
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --danger-color: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* Sidebar */
+        nav {
+            width: 260px;
+            background-color: var(--sidebar-color);
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        nav ul { list-style: none; }
+        nav ul li { margin-bottom: 0.5rem; }
+
+        nav ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+        }
+
+        nav ul li a:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 260px;
+            padding: 3rem;
+            width: calc(100% - 260px);
+        }
+
+        header { margin-bottom: 3rem; }
+        header h1 { font-size: 2.5rem; font-weight: 700; color: var(--sidebar-color); }
+        header p { color: var(--text-light); margin-top: 0.5rem; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .stats-summary { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .stat-box {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            margin: 3rem 0 1.5rem;
+            font-size: 1.8rem;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .grid-materi {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            transition: 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .badge-k10 { background: #dcfce7; color: #166534; }
+        .badge-k11 { background: #dbeafe; color: #1e40af; }
+        .badge-k12 { background: #fef9c3; color: #854d0e; }
+
+        .card h3 { margin-bottom: 10px; font-size: 1.25rem; }
+        .card p { font-size: 0.95rem; color: var(--text-light); line-height: 1.6; }
+
+        /* Style Form Komentar */
+        .comment-section {
+            margin-top: 4rem;
+            padding-bottom: 5rem;
+        }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .comment-form input, .comment-form textarea {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .comment-form button {
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .comment-form button:hover {
+            background: #2563eb;
+        }
+        .comment-item {
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .comment-author { font-weight: 700; color: var(--sidebar-color); }
+        .comment-date { font-size: 0.8rem; color: var(--text-light); margin-left: 10px; }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+        .delete-btn:hover {
+            background: #fee2e2;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            nav { width: 80px; padding: 2rem 0.5rem; }
+            .logo, nav ul li a span { display: none; }
+            main { margin-left: 80px; width: calc(100% - 80px); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">HASBI MAULA<br>LEARNING DIARY</div>
+        <ul>
+            <li><a href="#overview">🏠 <span>Overview</span></a></li>
+            <li><a href="#kelas10">📚 <span>Kelas 10</span></a></li>
+            <li><a href="#kelas11">💻 <span>Kelas 11</span></a></li>
+            <li><a href="#kelas12">🚀 <span>Kelas 12</span></a></li>
+            <li><a href="#diskusi">💬 <span>Diskusi</span></a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header id="overview">
+            <h1>Diary Informatika Hasbi Maula Hamzah</h1>
+            <p>Dokumentasi materi, proyek, dan perkembangan skill IT saya selama di SMA 54.</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="chart-card">
+                <h3 style="margin-bottom: 1.5rem;">Visualisasi Skill (Radar Chart)</h3>
+                <canvas id="radarChart"></canvas>
+            </div>
+            
+            <div class="stats-summary">
+                <div class="stat-box">
+                    <h4>Progres Belajar</h4>
+                    <h2 style="font-size: 2.5rem; margin: 10px 0;">80%</h2>
+                    <p>Fase E & F Hampir Selesai</p>
+                </div>
+                <div class="chart-card">
+                    <h4>Materi Per Kelas</h4>
+                    <canvas id="barChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <section id="kelas10">
+            <h2 class="section-title"> Kelas 10 <small>(Fase E)</small></h2>
+            <div class="grid-materi">
+                <div class="card">
+                    <span class="badge badge-k10">Computational Thinking</span>
+                    <h3>Algoritma Dasar</h3>
+                    <p>Mempelajari dasar pemecahan masalah melalui flowchart dan logika pemrograman untuk membangun fondasi coding yang kuat.</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-k10">Sistem Komputer</span>
+                    <h3>Hardware & OS</h3>
+                    <p>Memahami bagaimana interaksi antara CPU, RAM, Storage, dan cara kerja Sistem Operasi dalam mengelola sumber daya.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kelas11">
+            <h2 class="section-title"> Kelas 11 <small>(Fase F)</small></h2>
+            <div class="grid-materi">
+                <div class="card">
+                    <span class="badge badge-k11">Programming</span>
+                    <h3>Bahasa Python & C++</h3>
+                    <p>Fokus pada struktur data, array, fungsi, dan implementasi kode prosedural untuk berbagai solusi digital.</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-k11">Jaringan</span>
+                    <h3>Topologi & Internet</h3>
+                    <p>Belajar cara data mengalir di internet melalui protokol TCP/IP dan konfigurasi perangkat jaringan dasar.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kelas12">
+            <h2 class="section-title"> Kelas 12 <small>(Fase F Lanjut)</small></h2>
+            <div class="grid-materi">
+                <div class="card">
+                    <span class="badge badge-k12">Data Science</span>
+                    <h3>Analisis Data Lanjut</h3>
+                    <p>Mengolah big data, melakukan prediksi tren menggunakan statistik, dan visualisasi data yang informatif.</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-k12">Social Impact</span>
+                    <h3>Cyber Security & Etika</h3>
+                    <p>Mengkaji dampak sosial teknologi, keamanan siber, dan pentingnya hukum privasi data di era global.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="diskusi" class="comment-section">
+            <h2 class="section-title">💬 Diskusi & Komentar</h2>
+            <div class="card">
+                <div class="comment-form">
+                    <input type="text" id="userName" placeholder="Nama Anda" required>
+                    <textarea id="userComment" rows="4" placeholder="Tulis komentar atau pertanyaan Anda di sini..." required></textarea>
+                    <button onclick="saveComment()">Kirim Komentar</button>
+                </div>
+                <div id="commentDisplay">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Radar Chart
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Coding', 'Sistem Komputer', 'Jaringan', 'Analisis Data', 'Literasi Digital', 'Berpikir Kritis'],
+                    datasets: [{
+                        label: 'Tingkat Pemahaman',
+                        data: [85, 70, 65, 90, 80, 95],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    scales: { r: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            // 2. Bar Chart
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['K10', 'K11', 'K12'],
+                    datasets: [{
+                        label: 'Total Topik',
+                        data: [8, 12, 10],
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b']
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 3. Muat Komentar
+            renderComments();
+        });
+
+        // FUNGSI LOGIKA KOMENTAR
+        function saveComment() {
+            const nameInput = document.getElementById('userName');
+            const commentInput = document.getElementById('userComment');
+
+            if (nameInput.value.trim() === "" || commentInput.value.trim() === "") {
+                alert("Harap isi nama dan komentar Anda.");
+                return;
+            }
+
+            const newComment = {
+                name: nameInput.value,
+                text: commentInput.value,
+                date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+            };
+
+            let comments = JSON.parse(localStorage.getItem('informatika_comments')) || [];
+            comments.push(newComment);
+            localStorage.setItem('informatika_comments', JSON.stringify(comments));
+
+            nameInput.value = "";
+            commentInput.value = "";
+            renderComments();
+        }
+
+        // FUNGSI BARU: HAPUS KOMENTAR
+        function deleteComment(index) {
+            if (confirm("Apakah Anda yakin ingin menghapus komentar ini?")) {
+                let comments = JSON.parse(localStorage.getItem('informatika_comments')) || [];
+                // Menghapus 1 item pada index yang dipilih
+                comments.splice(index, 1);
+                localStorage.setItem('informatika_comments', JSON.stringify(comments));
+                renderComments();
+            }
+        }
+
+        function renderComments() {
+            const display = document.getElementById('commentDisplay');
+            const comments = JSON.parse(localStorage.getItem('informatika_comments')) || [];
+
+            if (comments.length === 0) {
+                display.innerHTML = `<p style="color: var(--text-light); text-align: center;">Belum ada komentar. Jadilah yang pertama!</p>`;
+                return;
+            }
+
+            // Render dengan tombol hapus. 
+            // Catatan: index asli dipertahankan agar penghapusan akurat.
+            display.innerHTML = comments.map((c, index) => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div>
+                            <span class="comment-author">${c.name}</span>
+                            <span class="comment-date">${c.date}</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteComment(${index})">Hapus</button>
+                    </div>
+                    <p style="font-size: 0.95rem; line-height: 1.5; padding-right: 20px;">${c.text}</p>
+                </div>
+            `).reverse().join(''); 
+        }
+    </script>
+</body>
+</html>
